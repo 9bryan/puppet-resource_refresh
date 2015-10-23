@@ -1,0 +1,6 @@
+#This script monitors a log file and sends lines that match your criteria to another file.
+#By design, this is intended to work in concert with a puppet defined type that will
+#refresh the service associated with it if the destination file is populated.
+#
+
+tail -f <%= @logfile %> | egrep --line-buffered "<%= @chaos_string %>" > <%= @watch_file %>
