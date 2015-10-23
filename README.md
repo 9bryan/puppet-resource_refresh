@@ -15,9 +15,9 @@
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves.
-This is your 30 second elevator pitch for your module. Consider including
-OS/Puppet version it works with.
+This module lays down a script that will monitor a log file and bounce a service when a string is found.  This is a hack.  This not a monitoring solution.
+
+This module is for the sysadmin that keeps getting calls because a service keeps crashing and he needs to have it automatically restart when it loses its brains.
 
 ## Module Description
 
@@ -65,7 +65,11 @@ with things. (We are working on automating this section!)
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+Only tried with Centos 6.
+
+Should work on anything with tail and egrep.
+
+The service wont be restarted right away, it will only be restarted when puppet runs.
 
 ## Development
 
