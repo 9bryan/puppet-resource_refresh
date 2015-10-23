@@ -5,19 +5,9 @@ define service_charm (
   $chaos_string,
   $service = $title,
 ){
-  $service_charm_base   = '/opt/service_charm'
-  $service_charm_home   = "${service_charm_base}/${title}"
+  $service_charm_home   = '/opt/service_charm'
   $watch_file           = "${service_charm_home}/${title}-watch.txt"
   $service_charm_script = "${service_charm_home}/${title}-service_charm.sh"
-
-  #If service_charm_base directory doesnt exist, create it
-  if defined(File[$service_charm_base])==false {
-    file { $service_charm_base:
-      ensure => directory,
-      mode   => '0550',
-      before => File[$service_charm_home],
-    }
-  }
 
   File {
     owner => 'root',
@@ -34,8 +24,8 @@ define service_charm (
   file { $watch_file:
     ensure  => file,
     mode    => '0550',
-    content => '0',
-    notify  => Service[$service],
+    content => '',
+    notify  => [Service[$service],Service[$service_charm_script]],
     require => File[$service_charm_home],
   }
 
@@ -44,6 +34,16 @@ define service_charm (
     mode    => '0550',
     content => template('service_charm/service_charm.sh.erb'),
     require => File[$service_charm_home],
+    notify  => Service[$service_charm_script],
+  }
+
+  service { $service_charm_script:
+    ensure  => running,
+    start   => $service_charm_script,
+    status  => "ps -ef | grep ${logfile} | grep -v grep",
+    stop    => "kill $(ps -ef | grep ${logfile} | grep -v grep | awk '{ print \$2 }')",
+    restart => "kill $(ps -ef | grep ${logfile} | grep -v grep | awk '{ print \$2 }'); ${service_charm_script}",
+    require => [File[$service_charm_script],[Service[$service]]],
   }
 
 }

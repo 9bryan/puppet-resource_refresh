@@ -3,4 +3,4 @@
 #refresh the service associated with it if the destination file is populated.
 #
 
-tail -f <%= @logfile %> | egrep --line-buffered "<%= @chaos_string %>" > <%= @watch_file %>
+tail -f -n 1 <%= @logfile %> | egrep --line-buffered "<%= @chaos_string %>" >> <%= @watch_file %> &
