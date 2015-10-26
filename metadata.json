@@ -1,12 +1,12 @@
 {
-  "name": "9bryan-service_charm",
+  "name": "9bryan-resource_refresh",
   "version": "0.1.0",
   "author": "9bryan",
   "summary": "Refresh services that appear to have lost their brains",
   "license": "Apache-2.0",
-  "source": "https://github.com/9bryan/puppet-service_charm",
-  "project_page": "https://github.com/9bryan/puppet-service_charm",
-  "issues_url": "https://github.com/9bryan/puppet-service_charm/issues",
+  "source": "https://github.com/9bryan/puppet-resource_refresh",
+  "project_page": "https://github.com/9bryan/puppet-resource_refresh",
+  "issues_url": "https://github.com/9bryan/puppet-resource_refresh/issues",
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
   ]

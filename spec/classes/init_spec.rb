@@ -1,7 +1,7 @@
 require 'spec_helper'
-describe 'service_charm' do
+describe 'resource_refresh' do
 
   context 'with defaults for all parameters' do
-    it { should contain_class('service_charm') }
+    it { should contain_class('resource_refresh') }
   end
 end
