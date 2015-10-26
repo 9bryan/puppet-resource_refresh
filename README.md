@@ -53,8 +53,21 @@ for upgrading, you may wish to include an additional section here: Upgrading
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+After setting up your app, add the resource_refresh with the name of the service as the title and the logfile that you want to watch.  Chaos_string is the string in your logs that brings your service into an undesirable state.
+
+~~~
+  class { 'tomcat': }
+  class { 'java': }
+  tomcat::instance { 'test':
+    source_url => 'http://mirror.symnds.com/software/Apache/tomcat/tomcat-8/v8.0.28/bin/apache-tomcat-8.0.28.tar.gz',
+  }->
+  tomcat::service { 'default': }
+
+  resource_refresh { 'tomcat-default':
+    logfile      => '/opt/apache-tomcat/logs/catalina.out',
+    chaos_string => 'Error parsing HTTP request header',
+  }
+~~~
 
 ## Reference
 
