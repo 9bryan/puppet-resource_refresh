@@ -1,12 +1,14 @@
 #resource_refresh defined type
 define resource_refresh (
-  $logfile,
-  $chaos_string,
-  $service = $title,
+  String $logfile,
+  String $chaos_string,
+  String $resource_name = $title,
+  String $resource_type = 'Service',
 ){
   $resource_refresh_home   = '/opt/resource_refresh'
   $watch_file              = "${resource_refresh_home}/${title}-watch.txt"
   $resource_refresh_script = "${resource_refresh_home}/${title}-resource_refresh.sh"
+  $_resource_type          = Resource[capitalize($resource_type)]
 
   File {
     owner => 'root',
@@ -19,12 +21,12 @@ define resource_refresh (
     mode   => '0550',
   }
 
-  #If this file gets changed, restart the target service
+  #If this file gets changed, restart the target resource
   file { $watch_file:
     ensure  => file,
     mode    => '0550',
     content => '',
-    notify  => [Service[$service],Service[$resource_refresh_script]],
+    notify  => [$_resource_type[$resource_name],Service[$resource_refresh_script]],
     require => File[$resource_refresh_home],
   }
 
@@ -42,7 +44,7 @@ define resource_refresh (
     status  => "ps -ef | grep ${logfile} | grep -v grep",
     stop    => "kill $(ps -ef | grep ${logfile} | grep -v grep | awk '{ print \$2 }')",
     restart => "kill $(ps -ef | grep ${logfile} | grep -v grep | awk '{ print \$2 }'); ${resource_refresh_script}",
-    require => [File[$resource_refresh_script],[Service[$service]]],
+    require => [File[$resource_refresh_script],[$_resource_type[$resource_name]]],
   }
 
 }
